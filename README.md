@@ -39,8 +39,8 @@ Installing
 Starting the server
 -------------------
 
-	In a command prompt in the NodeReader folder type:
-		`node sever.js`
-	
-	Then use the web browser(probably should be an update to date browser I haven't tested this at all yet, have only been using chrome myself) 
-	of your choice to navigate to [Reader.htm](http://localhost:3000/Reader.htm)
+In a command prompt in the NodeReader folder type:
+	`node sever.js`
+
+Then use the web browser(probably should be an update to date browser I haven't tested this at all yet, have only been using chrome myself) 
+of your choice to navigate to [Reader.htm](http://localhost:3000/Reader.htm)
