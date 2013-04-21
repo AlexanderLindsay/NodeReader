@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Node RSS Reader</title>
+    <link href="Content/bootstrap.css" rel="stylesheet">
+    <link href="Content/bootstrap-responsive.css" rel="stylesheet">
+	<link href="Content/reader.css" rel="stylesheet">
+</head>
+<body>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<h1>Node RSS Reader</h1>
+			</div>
+		</div>
+	</div>
+    <div class="container-fluid" id="reader">
+        <div class="row-fluid">
+            <div class="span3">
+                <ul class="nav nav-tabs nav-stacked">
+					<li>
+						<a data-bind="attr: { href: '#All' }">
+						<span>All Items</span>
+						<span class="badge pull-right" data-bind="text: allCount, css: { 'badge-important': allCount() > 0}"><span>
+						</a>
+					</li>
+					<!-- ko foreach: subscriptions -->
+                    <li data-bind="css: {active: active}">
+							<a data-bind="attr: { href: '#' + $index(), title: title }">
+								<div class="subscription" data-bind="text: title"></div>
+								<span class="badge pull-right" data-bind="text: count, css: { 'badge-important': count() > 0}"></span>
+							</a>
+                    </li>
+					<!-- /ko -->
+                </ul>
+            </div>
+            <div class="span9">
+				<button class="btn" data-bind="click: readAll">Mark all as Read</button>
+                <div data-bind="foreach: unreadEntries">
+					<div class="well">
+						<small class="label" data-bind="text: subscription.title"></small>
+						<div class="row-fluid">
+							<a data-bind="text: title, attr: { href: url }, click: read"></a>
+							<span class="label pull-right" data-bind="text: pubDate"></span>
+						</div>
+						<div data-bind="text: description">
+						</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="Scripts/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="Scripts/bootstrap.js"></script>
+    <script type="text/javascript" src="Scripts/knockout-2.2.1.js"></script>
+    <script type="text/javascript" src="Scripts/sammy.min.js"></script>
+    <script type="text/javascript" src="Scripts/Reader.js"></script>
+</body>
+</html>

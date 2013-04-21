@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+    <head>
+        <title>Example subscriptions File</title>
+    </head>
+    <body>
+        <outline text="xkcd.com" title="xkcd.com" type="rss"
+            xmlUrl="http://xkcd.com/rss.xml" htmlUrl="http://xkcd.com/"/>
+    </body>
+</opml>
