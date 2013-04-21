@@ -11,6 +11,20 @@
 		self.pubDate = ko.observable();
 		self.description = ko.observable();
 		
+		self.displayPubDate = ko.computed(function() {
+			var rawDate = self.pubDate();
+			if(rawDate != undefined){
+				var published = moment(rawDate);
+				var diffInDays = moment().diff(published, 'days');
+				if(diffInDays > 0){
+					return published.format('L LT');
+				}else{
+					return published.format('LT') + ' ' + published.fromNow();
+				}
+			}
+			return "";			
+		});
+		
 		self.read = function(){
 			var readParams = {};
 			readParams.feed = self.subscription.url();

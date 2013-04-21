@@ -42,7 +42,7 @@
 						<small class="label" data-bind="text: subscription.title"></small>
 						<div class="row-fluid">
 							<a data-bind="text: title, attr: { href: url }, click: read"></a>
-							<span class="label pull-right" data-bind="text: pubDate"></span>
+							<span class="label pull-right" data-bind="text: displayPubDate"></span>
 						</div>
 						<div data-bind="text: description">
 						</div>
@@ -55,6 +55,7 @@
     <script type="text/javascript" src="Scripts/bootstrap.js"></script>
     <script type="text/javascript" src="Scripts/knockout-2.2.1.js"></script>
     <script type="text/javascript" src="Scripts/sammy.min.js"></script>
+	<script type="text/javascript" src="Scripts/moment.min.js"></script>
     <script type="text/javascript" src="Scripts/Reader.js"></script>
 </body>
 </html>
