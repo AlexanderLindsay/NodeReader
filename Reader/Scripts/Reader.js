@@ -7,9 +7,21 @@
 		
 		self.id = ko.observable();
 		self.title = ko.observable();
-		self.url = ko.observable();
+		self.link = ko.observable();
+		self.plainLink = ko.observable();
+		self.url = ko.computed(function(){
+			var lk = self.link();
+			var plk = self.plainLink();
+			
+			if(plk == undefined){
+				return lk;
+			}else{
+				return plk;
+			}
+		});
 		self.pubDate = ko.observable();
 		self.description = ko.observable();
+		self.summary = ko.observable();
 		
 		self.displayPubDate = ko.computed(function() {
 			var rawDate = self.pubDate();
@@ -81,9 +93,11 @@
 						var entry = new Entry(self);
 						entry.id(item.id);
 						entry.title(item.title);
-						entry.url(item.link);
+						entry.link(item.link)
+						entry.plainLink(item.plainLink);
 						entry.pubDate(item.pubDate);
 						entry.description(item.description);
+						entry.summary(item.summary);
 						newEntries.push(entry);
 					});
 					

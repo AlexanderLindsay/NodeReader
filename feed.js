@@ -1,6 +1,8 @@
 var fs = require('fs');
 var request = require('request');
 var xml2js = require('xml2js');
+var FeedParser = require('feedparser');
+var sanitizer = require('sanitizer');
 
 var feeds = {};
 
@@ -67,58 +69,22 @@ function refreshFeed(feed){
 		feeds[feed.url] = feed;
 }
 
-function loadFeedFromRss(rss){
+function loadFeedFromArticles(articles){
 	
 	var links = [];
 	
-	var items = rss.channel[0].item;
-	for(var i = 0; i < items.length; i++){
-		var item = items[i];
-		var linkItem = {};
+	for(var i = 0; i < articles.length; i++) {
+		var article = articles[i];
 		
-		if(item.guid != undefined){
-			linkItem.id = item.guid[0]._;
-		}else{
-			linkItem.id = item.link[0];
-		}
-		linkItem.link = item.link[0];
-		linkItem.title = item.title[0];
-		linkItem.pubDate = item.pubDate[0];
-		linkItem.description = item.description[0];
-		linkItem.unread = true;
-		
-		links.push(linkItem);
-	}
-	
-	return links
-}
-
-function loadFeedFromHtml(html){
-	
-	var links = [];
-	
-	var body = html.body;
-	for(var i = 0; i < body.length; i++) {
-		var item = body[i];
-		console.log(item);
-	}
-	
-	return links;
-}
-
-function loadFeedFromFeed(feed){
-	
-	var links = [];
-	
-	var entries = feed.entry;
-	for(var i = 0; i < entries.length; i++) {
-		var item = entries[i];
 		var linkItem = {};
-		linkItem.id = item.id[0];
-		linkItem.link = item.link[0];
-		linkItem.title = item.title[0];
-		linkItem.published = item.published[0];
-		linkItem.description = item.summary[0];
+		linkItem.id = article.guid;
+		linkItem.link = article.link;
+		linkItem.plainLink = article.origlink;
+		linkItem.title = article.title;
+		linkItem.description = sanitizer.sanitize(article.description);
+		linkItem.summary = sanitizer.sanitize(article.description);		
+		linkItem.pubDate = article.pubdate;
+		linkItem.categories = article.categories;
 		linkItem.unread = true;
 		
 		links.push(linkItem);
@@ -128,24 +94,20 @@ function loadFeedFromFeed(feed){
 }
 
 function getFeedItems(url, callback){
-	var parser = new xml2js.Parser();
-	request(url, function(error, response, body) {
-		parser.parseString(body, function(err, result){
-			
+	request(url)
+		.pipe(new FeedParser())
+		.on('error', function(error) {
+			console.log(error);
+		})
+		.on('complete', function(meta, articles) {
 			var feed = new Feed(url);
 			
-			if(result.rss != undefined){
-				feed.links = loadFeedFromRss(result.rss);
-			}else if(result.html != undefined){
-				feed.links = loadFeedFromHtml(result.html);
-			}else{
-				feed.links = loadFeedFromFeed(result.feed);
-			}
+			feed.links = loadFeedFromArticles(articles);
 			
 			refreshFeed(feed);
 			callback(feed);
+		
 		});
-	});
 }
 
 exports.getFeedItems = getFeedItems
