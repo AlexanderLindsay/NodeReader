@@ -127,6 +127,15 @@
 			
 			return count;
 		});
+		
+		self.allCount.subscribe(function(newValue) {
+			var base = 'Node RSS Reader';
+			if(newValue > 0) {
+				document.title = base + ' (' + newValue + ')'
+			}else{
+				document.title = base;
+			}
+		});
 				
 		self.readAll = function() {
 			ko.utils.arrayForEach(self.subscriptions(), function(sub){
